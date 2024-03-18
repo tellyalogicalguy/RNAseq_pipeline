@@ -11,8 +11,8 @@ This pipeline will take single-end or paired-end FASTQ files and in order, do:
 2. Align files with `STAR` aligner (multisample 2-pass mode)
 3. Count reads in genes using `featureCounts`
 4. Use `DESeq2` to perform differential expression analysis
-5. Produce Bigwig files (individual `.bw` files as well as `merged.bw` per group and difference bigwig file compaing groups: e.g., `KO-WT.bw`) for visualisation on genome browser with `deepTools`
-6. Assemble stats from all steps using `MultiQC` for quality control.
+5. Produce Bigwig files (individual `.bw` files as well as `merged.bw` per group and difference bigwig file compaing groups: e.g., `KO-WT.bw`) for visualisation on genome browser with `deepTools` and `wiggleTools`
+6. Assemble stats from all steps using `MultiQC` for quality control
 7. Use `rMATS` to perform differential splicing analysis
 
 The raw files can be optionally downloaded from `SRA` (see below).  
