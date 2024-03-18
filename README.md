@@ -7,7 +7,7 @@ They were also designed to keep the scripts in the `HOME`/`PROJECT` space for pe
 This is done by mirroring the directory structure in both the `HOME` and `SCRATCH` spaces, with only symlinks pointing to the large files being stored in the `HOME` space. 
 
 This pipeline will take single-end or paired-end FASTQ files and in order, do:
-1. Filter with `fastp`
+1. Adapter trimming with `fastp`
 2. Align files with `STAR` aligner (multisample 2-pass mode)
 3. Count reads in genes using `featureCounts`
 4. Use `DESeq2` to perform differential expression analysis
