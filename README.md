@@ -9,11 +9,13 @@ This is done by mirroring the directory structure in both the `HOME` and `SCRATC
 This pipeline will take single-end or paired-end FASTQ files and:
 1. Filter with `fastp`
 2. Align files with `STAR` aligner (multisample 2-pass mode)
-3. Use `featureCounts` to count reads
-4. Use `DESeq2` to perform differential expression analysis
-5. Use `rMATS` to perform differential splicing analysis
+3. Produce Bigwig files for visualisation on genome browser with `deepTools`
+4. Count reads in genes using `featureCounts`
+5. Use `DESeq2` to perform differential expression analysis
+6. Use `rMATS` to perform differential splicing analysis
 
-The raw files can be optionally downloaded from `SRA` and it is advised to run `01_fastqc.sh` (see below for details) to perform quality control with `fastqc`.
+The raw files can be optionally downloaded from `SRA` (see below).  
+It is also advised to run `01_fastqc.sh` (see below for details) to check the quality of the files `fastqc`, before running the pipeline.
 ___
 ## Setting up
 There are 2 main aspects to setting up.
@@ -133,4 +135,5 @@ This will take you through a series of prompts asking:
 7. Enter spike-in genome (dm6/k12/none)
 
 Entering these options correctly will setup additional directories for the pipeline and submit jobs to `SLURM`.  
-The aligned filtered `BAM` files will be stored in `data/alignedBAM` with the suffix `_2pass_Aligned.sortedByCoord.out.bam`.
+The aligned filtered `BAM` files will be stored in `./exampleCellLine/rna_seq/hnrnpl/data/alignedBAM` with the suffix `_2pass_Aligned.sortedByCoord.out.bam`.  
+The other output files will be stored in the `./exampleCellLine/rna_seq/hnrnpl/results/` directory, under `bw_files`, `fcounts_deseq`, `rMATS` and `qc_stats`.
