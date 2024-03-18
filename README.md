@@ -139,7 +139,7 @@ This will take you through a series of prompts asking:
    * If you have a spiked-in exogenous chromosome from a different genome, you can also set-up the genome indexes for the relevant genome with the appropriate `sjdbOverhang` values and alter the location of the `$SPIKEIN_GENOME_DIR` in `./12_trimAlign.sh` file. Currently, the spike-in option is only set-up for paired-end reads. 
 
 Entering these options correctly will setup additional directories for the pipeline and submit jobs to `SLURM`.
-#### Location of the output files
+### Location of the output files
 The aligned filtered `BAM` files will be stored in `./exampleCellLine/rna_seq/hnrnpl/data/alignedBAM` with the suffix `_2pass_Aligned.sortedByCoord.out.bam`.  
 The other output files will be stored in the `./exampleCellLine/rna_seq/hnrnpl/results/` directory, under `bw_files`, `fcounts_deseq`, `rMATS` and `qc_stats`.
 
