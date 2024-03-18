@@ -6,12 +6,12 @@ These bash shell scripts were written to work on *Compute Canada* HPC servers wi
 They were also designed to keep the scripts in the `HOME`/`PROJECT` space and the large input and output files in the `SCRATCH` space for not running into storage limitaions and for faster read/write operations.  
 This is done by mirroring the folder structure in both the `HOME` and `SCRATCH` spaces, with only symlinks pointing to the large files being stored in the `HOME` space. 
 
-The pipeline will take single-end or paired-end FASTQ files and:
-*Filter with `fastp`
-*Align files with `STAR` aligner (multisample 2-pass mode)
-*Use `featureCounts` to count reads
-*Use `DESeq2` to perform differential expression analysis
-*Use `rMATS` to perform differential splicing analysis
+This pipeline will take single-end or paired-end FASTQ files and:
+1. Filter with `fastp`
+2. Align files with `STAR` aligner (multisample 2-pass mode)
+3. Use `featureCounts` to count reads
+4. Use `DESeq2` to perform differential expression analysis
+5. Use `rMATS` to perform differential splicing analysis
 
 The raw files can be optionally downloaded from `SRA` and it is advised to run `01_fastqc.sh` (see below for details) to perform quality control with `fastqc`.
 
