@@ -141,5 +141,8 @@ This will take you through a series of prompts asking:
 Entering these options correctly will setup additional directories for the pipeline and submit jobs to `SLURM`.
 ### Location of the output files
 The aligned filtered `BAM` files will be stored in `./exampleCellLine/rna_seq/hnrnpl/data/alignedBAM` with the suffix `_2pass_Aligned.sortedByCoord.out.bam`.  
-The other output files will be stored in the `./exampleCellLine/rna_seq/hnrnpl/results/` directory, under `bw_files`, `fcounts_deseq`, `rMATS` and `qc_stats`.
+The other output files will be stored in the `./exampleCellLine/rna_seq/hnrnpl/results/` directory, under `bw_files`, `fcounts_deseq`, `rMATS` and `qc_stats`.  
+DESeq2-normalized read counts with the log2 fold-changes and adjusted p-values will be in the file: `./exampleCellLine/rna_seq/hnrnpl/results/fcounts_deseq/normCounts.txt`.  
+Other `DESeq2` outputs like the MA plot and PC1 vs PC2 plots can be found in the `./exampleCellLine/rna_seq/hnrnpl/results/fcounts_deseq/` directory.  
+All `rMATS` outputs will be stored in the `./exampleCellLine/rna_seq/hnrnpl/results/rMATS/`.
 
