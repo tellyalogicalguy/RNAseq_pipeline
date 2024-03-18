@@ -111,6 +111,10 @@ The output will be in `../results/fastqc/` folder.
 The pipeline can be starting by running `./12_trimAlign.sh`.  
 This will take you through a series of prompts asking:
 1. What is the reference group name?
-    Enter which `Condition` (as entered in the `data_info.txt` file) should be used as the reference group. In my case, it would be `WT`.
+    * Enter which `Condition` (as entered in the `data_info.txt` file) should be used as the reference group. In my case, it would be `WT`.
 3. Is this dataset single-end or paired-end? (SE/PE)
-4. 
+4. Is the sequencing in this dataset stranded? ( Yes / No )
+5. Enter genome to align to (custom_ch12/mm10/hg38)
+6. Enter sjdbOverhang value to use for STAR alignment to $GENOME genome (49 / 75 / 99 / 149)
+7. Enter spike-in genome (dm6/k12/none)
+
