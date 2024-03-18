@@ -135,3 +135,5 @@ This will take you through a series of prompts asking:
     * You will have to have generated the genome index for different `sjdbOverhang` for this option to work. But you can alter the `./12_trimAlign.sh` file to point to the correct `$GENOME_DIR` variable, which is what the pipeline will ultimately use to align you raw data.
 7. Enter spike-in genome (dm6/k12/none)
 
+Entering these options currently will setup additional folders for the pipeline and submit jobs to `SLURM`.  
+The aligned filtered `BAM` files will be stored in `data/alignedBAM` with the suffix `_2pass_Aligned.sortedByCoord.out.bam`.
