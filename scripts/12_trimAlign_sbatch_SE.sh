@@ -98,15 +98,8 @@ do
         echo "Submitting: "$SAMPLE_ID
         export SAMPLE_ID
         SLRM_NAME="34_star2ndPassBW_${SAMPLE_ID}"
-        if [[ $SE_or_PE == "PE" ]]
-        then
-                echo "Starting paired-end alignment procedure..."
-                sbatch --job-name "$SLRM_NAME" 34_star2ndPassBW_sbatch.sh
-        elif [[ $SE_or_PE == "SE" ]]
-        then
-                echo "Starting single-end alignment procedure..."
-                sbatch --job-name "$SLRM_NAME" 34_star2ndPassBW_sbatch_SE.sh
-        fi
+	echo "Starting single-end alignment procedure..."
+	sbatch --job-name "$SLRM_NAME" 34_star2ndPassBW_sbatch_SE.sh
         sleep 0.2
 done
 

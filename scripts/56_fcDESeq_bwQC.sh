@@ -43,8 +43,8 @@ do
 done
 
 echo "ALIGNED_BAM_DIR="$ALIGNED_BAM_DIR
-echo "export FC_DSQ_DIR="$FC_DSQ_DIR >> ${DATA_INFO_DIR}/pipeline_config_vars.sh
-echo "export FC_DSQ_SYML_DIR="$FC_DSQ_SYML_DIR >> ${DATA_INFO_DIR}/pipeline_config_vars.sh
+#echo "export FC_DSQ_DIR="$FC_DSQ_DIR >> ${DATA_INFO_DIR}/pipeline_config_vars.sh
+#echo "export FC_DSQ_SYML_DIR="$FC_DSQ_SYML_DIR >> ${DATA_INFO_DIR}/pipeline_config_vars.sh
 echo "export RMATS_DIR="$RMATS_DIR >> ${DATA_INFO_DIR}/pipeline_config_vars.sh
 echo "export RMATS_SYML_DIR="$RMATS_SYML_DIR >> ${DATA_INFO_DIR}/pipeline_config_vars.sh
 echo "export BW_DIR="$BW_DIR >> ${DATA_INFO_DIR}/pipeline_config_vars.sh

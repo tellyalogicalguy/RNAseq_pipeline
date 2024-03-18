@@ -121,17 +121,22 @@ esac
 echo "Enter spike-in genome (dm6/k12/none):"
 read SPIKEIN_GENOME
 case $SPIKEIN_GENOME in
-	dm6 | k12 | none )
-		echo "Spike-in genome is: "$SPIKEIN_GENOME
-		echo "export SPIKEIN_GENOME="$SPIKEIN_GENOME >> ${PIPELINE_VARS_FILE}
-		# add chromosome file size and gtf file
-		#export SPIKEIN_GENOME
+	dm6 )
+		SPIKEIN_GTF_FILE="${SCRATCHPARENT_DIR}common/dm6/dm6.ensGene.gtf"
+		SPIKEIN_CHROM_SIZE_FILE="${SCRATCHPARENT_DIR}common/dm6/dm6.fa.fai"
+		;;
+	k12 )
+		echo "Files for k12 as spike-in genome are not set up yet."
+                exit 1
+		;;
+	none )
 		;;
 	*)
 		echo "Enter valid spike-in genome option. Not proceeding with alignments."
 		exit 1
 		;;
 esac
+echo "Spike-in genome is: "$SPIKEIN_GENOME
 
 # adding genome info to pipeline_config_vars.sh 
 echo "export GENOME="$GENOME >> ${PIPELINE_VARS_FILE}
@@ -141,6 +146,17 @@ echo "export GENOME_DIR="$GENOME_DIR >> ${PIPELINE_VARS_FILE}
 echo "export GTF_FILE="$GTF_FILE >> ${PIPELINE_VARS_FILE}
 echo "export GFF3_FILE="$GFF3_FILE >> ${PIPELINE_VARS_FILE}
 echo "export CHROM_SIZE_FILE="$CHROM_SIZE_FILE >> ${PIPELINE_VARS_FILE}
+
+echo "export SPIKEIN_GENOME="$SPIKEIN_GENOME >> ${PIPELINE_VARS_FILE}
+# deal with spike-in info
+if [[ $SPIKEIN_GENOME != "none" ]]
+then
+	SPIKEIN_GENOME_DIR="${SCRATCHPARENT_DIR}/common/star_indexes/${SPIKEIN_GENOME}/sjdbOH_${SJDB_OVHG_VAL}/"
+	echo "export SPIKEIN_GENOME_DIR="$SPIKEIN_GENOME_DIR >> ${PIPELINE_VARS_FILE}
+	echo "export SPIKEIN_GTF_FILE="$SPIKEIN_GTF_FILE >> ${PIPELINE_VARS_FILE}
+	#echo "export GFF3_FILE="$GFF3_FILE >> ${PIPELINE_VARS_FILE}
+	echo "export SPIKEIN_CHROM_SIZE_FILE="$SPIKEIN_CHROM_SIZE_FILE >> ${PIPELINE_VARS_FILE}
+fi
 
 
 #raw fastq input directory
@@ -153,8 +169,9 @@ echo "export RAW_FASTQ_DIR="$RAW_FASTQ_DIR >> ${PIPELINE_VARS_FILE}
 FILT_FASTQ_REL_DIR="${SCRIPT_CUR_DIR}/../data/filteredFastq/"
 ALIGNED_BAM_REL_DIR="${SCRIPT_CUR_DIR}/../data/alignedBAM/"
 BW_REL_DIR="../results/bw_files/"
+FC_DSQ_REL_DIR="../results/fcounts_deseq/"
 
-for DIR in FILT_FASTQ_REL_DIR ALIGNED_BAM_REL_DIR BW_REL_DIR
+for DIR in FILT_FASTQ_REL_DIR ALIGNED_BAM_REL_DIR BW_REL_DIR FC_DSQ_REL_DIR
 do
 	if [ ! -d ${!DIR} ]
 	then
@@ -185,6 +202,8 @@ echo "export ALIGNED_BAM_DIR="$ALIGNED_BAM_DIR >> ${PIPELINE_VARS_FILE}
 echo "export ALIGNED_BAM_SYML_DIR="$ALIGNED_BAM_SYML_DIR >> ${PIPELINE_VARS_FILE}
 echo "export BW_DIR="$BW_DIR >> ${PIPELINE_VARS_FILE}
 echo "export BW_SYML_DIR="$BW_SYML_DIR >> ${PIPELINE_VARS_FILE}
+echo "export FC_DSQ_DIR="$FC_DSQ_DIR >> ${PIPELINE_VARS_FILE}
+echo "export FC_DSQ_SYML_DIR="$FC_DSQ_SYML_DIR >> ${PIPELINE_VARS_FILE}
 
 BAM_PROG_FILE="${SCRIPT_CUR_DIR}/slurm_outputs/BAM_progress_file.txt"
 BAM_PROG_2P_FILE="${SCRIPT_CUR_DIR}/slurm_outputs/BAM_progress_2Pass_file.txt"
@@ -202,7 +221,7 @@ if [ -e ${NORM_FACTOR_FILE} ]
 then
 	rm ${NORM_FACTOR_FILE}
 fi
-echo -e "SampleID\tNorm" >> ${NORM_FACTOR_FILE}
+echo -e "SampleID\tNormFactors" >> ${NORM_FACTOR_FILE}
 
 SAMPLE_IDS=($(awk 'NR>1 {print $1}' ${DATA_INFO_FILE} | uniq))
 #export FACTOR_NAME=${SAMPLE_IDS[0]/_*/}

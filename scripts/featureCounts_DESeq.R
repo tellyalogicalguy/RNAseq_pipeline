@@ -9,6 +9,7 @@ fcounts_deseq_dir<-Sys.getenv("FC_DSQ_DIR")
 refr_group_name<-Sys.getenv("REFR_GROUP_NAME")
 se_or_pe<-Sys.getenv("SE_or_PE")
 seq_stranded<-Sys.getenv("SEQ_STRANDED")
+norm_factor_file<-Sys.getenv("NORM_FACTOR_FILE")
 # factor_name<-Sys.getenv("FACTOR_NAME")
 
 #set up sampleSheet
@@ -17,10 +18,9 @@ pre_samplesheet<-fread(data_info_file)
 pre_samplesheet
 samplesheet<-unique(pre_samplesheet[,.(SampleID,Condition,Replicate)])
 samplesheet[,bamReads:=paste(aligned_bam_dir,SampleID,"_2pass_Aligned.sortedByCoord.out.bam",sep=""),by=SampleID]
-samplesheet[,fcounts_colname:=sub("_2pass_Aligned.sortedByCoord.out.bam","",basename(bamReads)),by=SampleID]
 
+#samplesheet[,fcounts_colname:=sub("_2pass_Aligned.sortedByCoord.out.bam","",basename(bamReads)),by=SampleID]
 #samplesheet[,Factor:=factor_name]
-#samplesheet[,Spikein:=paste(aligned_bam_dir,SampleID,".",spikein_genome,".bam",sep=""),by=SampleID]
 
 # setting variables for featureCounts counting
 if(se_or_pe=="PE"){
@@ -58,12 +58,13 @@ colData
 library(DESeq2)
 dds<-DESeqDataSetFromMatrix(countData=fcounts$counts,colData=colData,design=~Condition)
 
-# In case there is a spike-in, do DESeq on spike-in genome first to get norm factor and supply it here
-# # supply pre-existing Size Factor
-# norm_factors_dt<-fread("../results/diffbind/S2P_norm_factors.txt")
-# norm_factors<-1/norm_factors_dt$NormFactors
-# names(norm_factors)<-norm_factors_dt$SampleID
-# sizeFactors(dds)<-norm_factors
+# In case there is a spike-in, supply pre-existing Size Factor
+if(spikein_genome!="none"){
+	norm_factors_dt<-fread(norm_factor_file)
+	norm_factors<-1/norm_factors_dt$NormFactors
+	names(norm_factors)<-norm_factors_dt$SampleID
+	sizeFactors(dds)<-norm_factors
+}
 
 # run DESeq
 dds<-DESeq(dds)

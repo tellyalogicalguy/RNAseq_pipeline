@@ -6,7 +6,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem-per-cpu=4000
-#SBATCH --time=1:00:0
+#SBATCH --time=0:30:0
 #SBATCH --tmp=100G
 #SBATCH --output="./slurm_outputs/%x_slurm-%j.out"
 
@@ -52,6 +52,25 @@ STAR --runThreadN "$SLURM_CPUS_PER_TASK" \
 
 echo $(date -Iseconds)" SPG_RNAseq_pipeline: 2. Done STAR alignment."
 #---------------------------------------------------------#
+# if spike-in genome present, align to spike-in genome
+if [[ $SPIKEIN_GENOME != "none" ]]
+then
+
+echo $(date -Iseconds)" SPG_RNAseq_pipeline: 2. Starting aligning to $SPIKEIN_GENOME genome with STAR"
+
+# "--seedPerWindowNmax 10" option is necessary for spike-in because this determines the amount of time STAR looks for better matches. The default is 50 and becuase the % of mapped reads is low for splike-in, a lot of reads spend a lot of time looking for better alignment.
+STAR --runThreadN "$SLURM_CPUS_PER_TASK" \
+        --genomeDir "$SPIKEIN_GENOME_DIR" \
+        --readFilesIn $FILT_FASTQ_R1 $FILT_FASTQ_R2 \
+        --readFilesCommand gunzip -c \
+        --outSAMtype BAM SortedByCoordinate \
+	--seedPerWindowNmax 10 \
+        --outFileNamePrefix "${ALIGNED_BAM_DIR}/${SAMPLE_ID}_${SPIKEIN_GENOME}_"
+
+echo $(date -Iseconds)" SPG_RNAseq_pipeline: 2. Done STAR alignment to $SPIKEIN_GENOME genome."
+
+fi
+#---------------------------------------------------------#
 #making symlinks
 for SYML_DIR in FILT_FASTQ_SYML_DIR ALIGNED_BAM_SYML_DIR
 do
@@ -71,6 +90,12 @@ done
 #---------------------------------------------------------#
 # update progress file and start the next step in the pipeline if appropriate
 echo $(date -Iseconds)" SPG_RNAseq_pipeline: Updating BAM progress file"
+
+
+exec 200>${SCRIPT_CUR_DIR}/slurm_outputs/.lock.file || exit 1
+# set flock on the BAM_PROG_FILE ?
+flock 200 || exit 1
+
 gawk -i inplace -v S_ID="${SAMPLE_ID}" 'BEGIN{OFS="\t"} $1==S_ID {$2="Done"}'1 ${BAM_PROG_FILE}
 
 cat ${BAM_PROG_FILE}
@@ -83,7 +108,20 @@ while IFS=$'\t' read -r s_id status; do
         fi
 done < ${BAM_PROG_FILE}
 
+flock -u 200
 
+#---------------------------------------------------------#
+# if spike-in, do deseq2 normalization
+if [[ $SPIKEIN_GENOME != "none" ]]
+then
+	module load gcc/9.3.0
+	module load r/4.2.1
+
+	echo $(date -Iseconds)" SPG_RNAseq_pipeline: 2. Getting normFactors from spike-in DESeq2.."
+	Rscript ${SCRIPT_CUR_DIR}/getNormFactorsFromSpikeIn.R
+	echo $(date -Iseconds)" SPG_RNAseq_pipeline: 2. Done getting normFactors."
+fi
+#---------------------------------------------------------#
 echo $(date -Iseconds)" SPG_RNAseq_pipeline: Starting second pass with STAR"
 #for each read pair, send the variables to sbatch
 
@@ -94,15 +132,8 @@ do
         echo "Submitting: "$SAMPLE_ID
         export SAMPLE_ID
         SLRM_NAME="34_star2ndPassBW_${SAMPLE_ID}"
-        if [[ $SE_or_PE == "PE" ]]
-        then
-                echo "Starting paired-end alignment procedure..."
-                sbatch --job-name "$SLRM_NAME" 34_star2ndPassBW_sbatch.sh
-        elif [[ $SE_or_PE == "SE" ]]
-        then
-                echo "Starting single-end alignment procedure..."
-                # sbatch --job-name "$SLRM_NAME" 1234_trimAlignFilterMACS_SE_sbatch.sh
-        fi
+	echo "Starting paired-end alignment procedure..."
+	sbatch --job-name "$SLRM_NAME" 34_star2ndPassBW_sbatch.sh
         sleep 0.2
 done
 
