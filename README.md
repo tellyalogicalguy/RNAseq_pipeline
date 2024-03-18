@@ -6,6 +6,15 @@ These bash shell scripts were written to work on *Compute Canada* HPC servers wi
 They were also designed to keep the scripts in the `HOME`/`PROJECT` space and the large input and output files in the `SCRATCH` space for not running into storage limitaions and for faster read/write operations.  
 This is done by mirroring the folder structure in both the `HOME` and `SCRATCH` spaces, with only symlinks pointing to the large files being stored in the `HOME` space. 
 
+The pipeline will take single-end or paired-end FASTQ files and:
+*Filter with `fastp`
+*Align files with `STAR` aligner (multisample 2-pass mode)
+*Use `featureCounts` to count reads
+*Use `DESeq2` to perform differential expression analysis
+*Use `rMATS` to perform differential splicing analysis
+
+The raw files can be optionally downloaded from `SRA` and it is advised to run `01_fastqc.sh` (see below for details) to perform quality control with `fastqc`.
+
 ## Setting up
 The project folders and scripts can be set-up by running the `setup_initial_folders_hnRNPL_RNAseq.sh` script.  
 This script will take the name of a cell line/type as an argument and set up several folders necessary for the rest of the pipeline.
@@ -78,7 +87,7 @@ Alternatively, the raw files can be uploaded to the SCRATCH space directly. In t
 
 Do `md5sum` to check file integrity.
 
-## Setting up data_info.txt file
+### Setting up `data_info.txt` file
 The `data_info.txt` file in `./exampleCellLine/rna_seq/hnrnpl/data/` folder should contain the relevant information on the raw data for running the pipeline.
 It is of the format:
 | SampleID | Read_num | Original_file_name                                             | Condition | Replicate |
