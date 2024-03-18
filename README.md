@@ -3,7 +3,7 @@
 Pipeline for taking raw FASTQ files, aligning them to a genome of choice, doing differential expression and splicing analysis.
 
 These bash shell scripts were written to work on *Compute Canada* HPC servers with the **SLURM** scheduler.  
-They were also designed to keep the scripts in the `HOME`/`PROJECT` space and the large input and output files in the `SCRATCH` space for not running into storage limitations and for faster read/write operations.  
+They were also designed to keep the scripts in the `HOME`/`PROJECT` space for persistent storage, and the large input and output files in the `SCRATCH` space for not running into storage limitations and for faster read/write operations.  
 This is done by mirroring the directory structure in both the `HOME` and `SCRATCH` spaces, with only symlinks pointing to the large files being stored in the `HOME` space. 
 
 This pipeline will take single-end or paired-end FASTQ files and in order, do:
@@ -11,7 +11,7 @@ This pipeline will take single-end or paired-end FASTQ files and in order, do:
 2. Align files with `STAR` aligner (multisample 2-pass mode)
 3. Count reads in genes using `featureCounts`
 4. Use `DESeq2` to perform differential expression analysis
-5. Produce Bigwig files (`merged.bw` per group and difference bigwig file compaing groups: e.g., `KO-WT.bw`) for visualisation on genome browser with `deepTools`
+5. Produce Bigwig files (individual `.bw` files as well as `merged.bw` per group and difference bigwig file compaing groups: e.g., `KO-WT.bw`) for visualisation on genome browser with `deepTools`
 6. Assemble stats from all steps using `MultiQC` for quality control.
 7. Use `rMATS` to perform differential splicing analysis
 
