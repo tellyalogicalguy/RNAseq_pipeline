@@ -14,9 +14,14 @@ This pipeline will take single-end or paired-end FASTQ files and:
 5. Use `rMATS` to perform differential splicing analysis
 
 The raw files can be optionally downloaded from `SRA` and it is advised to run `01_fastqc.sh` (see below for details) to perform quality control with `fastqc`.
-
+___
 ## Setting up
-The project folders and scripts can be set-up by running the `setup_initial_folders_hnRNPL_RNAseq.sh` script.  
+There are 2 main aspects to setting up.
+1. Setting up folders, downloading raw files and adjusting configuration (`data_info.txt`) file.
+2. Setting up the genome index for `STAR`, downloading the `GTF`, `GFF` annotation files and a `chrom.sizes` file (containing the chromosome names and their length).
+    * The second setup step is not covered here. But refer to [this tutorial](https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/lessons/03_alignment.html) and [here](https://www.biostars.org/p/173963/) to complete the necessary steps before running the pipeline. 
+### Folder setup
+The project folders and scripts can be set-up automatically by running the `setup_initial_folders_hnRNPL_RNAseq.sh` script.  
 This script will take the name of a cell line/type as an argument and set up several folders necessary for the rest of the pipeline.
 Since this pipeline was set-up for analysing publicly available RNA-seq data of different cell types where a particular protein of interest (hnRNPL) had been depleted, the default folder structure currently is `./exampleCellLine/rna_seq/hnrnpl/` in which the `data`, `scripts` and `results` folders will be made.  
 Here is an example output when running `setup_initial_folders_hnRNPL_RNAseq.sh exampleCellLine`, which contains useful instructions to finish set-up:
@@ -111,11 +116,12 @@ This completes the setup.
 
 Once the files are setup, scripts can be run from the `./scripts` folder.
 
-#### fastqc
+### fastqc
 Before running the entire pipeline, the quality of the raw files can be checked using fastqc.  
 The script `01_fastq.sh` will take multiple `*.fastq.gz` files or a folder containing said files as inputs.  
 The output will be in `../results/fastqc/` folder.
 
+_____
 ## Running the pipeline
 The pipeline can be starting by running `./12_trimAlign.sh`.  
 This will take you through a series of prompts asking:
@@ -124,6 +130,8 @@ This will take you through a series of prompts asking:
 3. Is this dataset single-end or paired-end? (SE/PE)
 4. Is the sequencing in this dataset stranded? ( Yes / No )
 5. Enter genome to align to (custom_ch12/mm10/hg38)
+    * Depending on where you completed the `STAR` genome indexing and where the `GTF`, `GFF3` and `chrom.sizes` files are, you will have to edit the `./12_trimAlign.sh` file with the correct location of these folders and files before running the pipeline. The locations are under `case $GENOME`.
 6. Enter sjdbOverhang value to use for STAR alignment to $GENOME genome (49 / 75 / 99 / 149)
+    * You will have to have generated the genome index for different `sjdbOverhang` for this option to work. But you can alter the `./12_trimAlign.sh` file to point to the correct `$GENOME_DIR` variable, which is what the pipeline will ultimately use to align you raw data.
 7. Enter spike-in genome (dm6/k12/none)
 
