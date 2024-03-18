@@ -125,7 +125,7 @@ The script `01_fastq.sh` will take multiple `*.fastq.gz` files or a directory co
 The output will be in `../results/fastqc/` directory.
 _____
 ## Running the pipeline
-The pipeline can be starting by running `./12_trimAlign.sh` from the `./exampleCellLine/rna_seq/hnrnpl/scripts/` directory.  
+The pipeline can be started by running `./12_trimAlign.sh` from the `./exampleCellLine/rna_seq/hnrnpl/scripts/` directory.  
 This will take you through a series of prompts asking:
 1. What is the reference group name?
     * Enter which `Condition` (as entered in the `data_info.txt` file) should be used as the reference group. In my case, it would be `WT`.
