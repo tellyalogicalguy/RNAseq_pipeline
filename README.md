@@ -17,6 +17,8 @@ This pipeline will take single-end or paired-end FASTQ files and in order, do:
 
 The raw files can be optionally downloaded from `SRA` (see below).  
 It is also advised to run `01_fastqc.sh` (see below for details) to check the quality of the files `fastqc`, before running the pipeline.
+
+For exact options used in each of the above steps, refer to the files in `scripts` directory.
 ___
 ## Setting up
 There are 2 main aspects to setting up.
