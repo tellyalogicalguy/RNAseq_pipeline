@@ -10,7 +10,7 @@ This is done by mirroring the folder structure in both the `HOME` and `SCRATCH` 
 The project folders and scripts can be set-up by running the `setup_initial_folders_hnRNPL_RNAseq.sh` script.  
 This script will take the name of a cell line/type as an argument and set up several folders necessary for the rest of the pipeline.
 Since this pipeline was set-up for analysing publicly available RNA-seq data of different cell types where a particular protein of interest (hnRNPL) had been depleted, the default folder structure currently is `./exampleCellLine/rna_seq/hnrnpl/` in which the `data`, `scripts` and `results` folders will be made.  
-Here is an example output when running `setup_initial_folders_hnRNPL_RNAseq.sh exampleCellLine`, which contains useful instructions to finish set-up.
+Here is an example output when running `setup_initial_folders_hnRNPL_RNAseq.sh exampleCellLine`, which contains useful instructions to finish set-up:
 ```
 Setting up folders in /home/subrampg/binf_analyses/hnrnpl_project/ (local)
 /home/subrampg/binf_analyses/hnrnpl_project/exampleCellLine
@@ -71,14 +71,32 @@ ln -s ~/scratch/binf_analyses_data/"??PREFIX??"/"??FACTOR??"/"??scratch_data_fol
 
 The default folder structures can be changed by altering the `setup_initial_folders_hnRNPL_RNAseq.sh` folder.
 
-## Downloading files from SRA (optional)
+### Downloading files from SRA (optional)
 You can chose to download files from the SRA.  
 Update the `sra_list.txt` in the `./exampleCellLine/rna_seq/hnrnpl/data/` folder and then running `./sra_download.sh`. This script will downloaded files from SRA to the `./exampleCellLine/rna_seq/hnrnpl/data/raw_fastq/` folder in the SCRATCH space and symlink the raw files to the mirrored folder in HOME space.  
 Alternatively, the raw files can be uploaded to the SCRATCH space directly. In this case, please symlink the files by `ln -s`.  
 
 Do `md5sum` to check file integrity.
 
-##
+## Setting up data_info.txt file
+The `data_info.txt` file in `./exampleCellLine/rna_seq/hnrnpl/data/` folder should contain the relevant information on the raw data for running the pipeline.
+It is of the format:
+| SampleID | Read_num | Original_file_name                                             | Condition | Replicate |
+|----------|----------|----------------------------------------------------------------|-----------|-----------|
+| WT1      | 1        | NS.1187.001.UDI0041_i7---UDI0041_i5.DIN-GS_cre_d1_R1.fastq.gz  | WT        | 1         |
+| WT1      | 2        | NS.1187.001.UDI0041_i7---UDI0041_i5.DIN-GS_cre_d1_R2.fastq.gz  | WT        | 1         |
+| WT2      | 1        | NS.1187.001.UDI0043_i7---UDI0043_i5.DIN-GS_cre2_d1_R1.fastq.gz | WT        | 2         |
+| WT2      | 2        | NS.1187.001.UDI0043_i7---UDI0043_i5.DIN-GS_cre2_d1_R2.fastq.gz | WT        | 2         |
+| WT3      | 1        | NS.1187.001.UDI0045_i7---UDI0045_i5.DIN-GS_cre3_d1_R1.fastq.gz | WT        | 3         |
+| WT3      | 2        | NS.1187.001.UDI0045_i7---UDI0045_i5.DIN-GS_cre3_d1_R2.fastq.gz | WT        | 3         |
+| KO1      | 1        | NS.1187.001.UDI0042_i7---UDI0042_i5.DIN-GS_ko_d1_R1.fastq.gz   | KO        | 1         |
+| KO1      | 2        | NS.1187.001.UDI0042_i7---UDI0042_i5.DIN-GS_ko_d1_R2.fastq.gz   | KO        | 1         |
+| KO2      | 1        | NS.1187.001.UDI0044_i7---UDI0044_i5.DIN-GS_ko2_d1_R1.fastq.gz  | KO        | 2         |
+| KO2      | 2        | NS.1187.001.UDI0044_i7---UDI0044_i5.DIN-GS_ko2_d1_R2.fastq.gz  | KO        | 2         |
+| KO3      | 1        | NS.1187.001.UDI0046_i7---UDI0046_i5.DIN-GS_ko3_d1_R1.fastq.gz  | KO        | 3         |
+| KO3      | 2        | NS.1187.001.UDI0046_i7---UDI0046_i5.DIN-GS_ko3_d1_R2.fastq.gz  | KO        | 3         |
+
+Please update the details according to your raw data.
 
 This completes the setup.
 
@@ -91,4 +109,8 @@ The output will be in `../results/fastqc/` folder.
 
 ## Running the pipeline
 The pipeline can be starting by running `./12_trimAlign.sh`.  
-This will take you through a series of prompts 
+This will take you through a series of prompts asking:
+1. What is the reference group name?
+    Enter which `Condition` (as entered in the `data_info.txt` file) should be used as the reference group. In my case, it would be `WT`.
+3. Is this dataset single-end or paired-end? (SE/PE)
+4. 
