@@ -6,13 +6,14 @@ These bash shell scripts were written to work on *Compute Canada* HPC servers wi
 They were also designed to keep the scripts in the `HOME`/`PROJECT` space and the large input and output files in the `SCRATCH` space for not running into storage limitaions and for faster read/write operations.  
 This is done by mirroring the directory structure in both the `HOME` and `SCRATCH` spaces, with only symlinks pointing to the large files being stored in the `HOME` space. 
 
-This pipeline will take single-end or paired-end FASTQ files and:
+This pipeline will take single-end or paired-end FASTQ files and in order, do:
 1. Filter with `fastp`
 2. Align files with `STAR` aligner (multisample 2-pass mode)
-3. Produce Bigwig files for visualisation on genome browser with `deepTools`
-4. Count reads in genes using `featureCounts`
-5. Use `DESeq2` to perform differential expression analysis
-6. Use `rMATS` to perform differential splicing analysis
+3. Count reads in genes using `featureCounts`
+4. Use `DESeq2` to perform differential expression analysis
+5. Produce Bigwig files (`merged.bw` per group and difference bigwig file compaing groups: e.g., `KO-WT.bw`) for visualisation on genome browser with `deepTools`
+6. Assemble stats from all steps using `MultiQC` for quality control.
+7. Use `rMATS` to perform differential splicing analysis
 
 The raw files can be optionally downloaded from `SRA` (see below).  
 It is also advised to run `01_fastqc.sh` (see below for details) to check the quality of the files `fastqc`, before running the pipeline.
@@ -137,3 +138,4 @@ This will take you through a series of prompts asking:
 Entering these options correctly will setup additional directories for the pipeline and submit jobs to `SLURM`.  
 The aligned filtered `BAM` files will be stored in `./exampleCellLine/rna_seq/hnrnpl/data/alignedBAM` with the suffix `_2pass_Aligned.sortedByCoord.out.bam`.  
 The other output files will be stored in the `./exampleCellLine/rna_seq/hnrnpl/results/` directory, under `bw_files`, `fcounts_deseq`, `rMATS` and `qc_stats`.
+
