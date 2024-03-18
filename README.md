@@ -3,7 +3,7 @@
 Pipeline for taking raw FASTQ files, aligning them to a genome of choice, doing differential expression and splicing analysis.
 
 These bash shell scripts were written to work on *Compute Canada* HPC servers with the **SLURM** scheduler.  
-They were also designed to keep the scripts in the `HOME`/`PROJECT` space and the large input and output files in the `SCRATCH` space for not running into storage limitaions and for faster read/write operations.  
+They were also designed to keep the scripts in the `HOME`/`PROJECT` space and the large input and output files in the `SCRATCH` space for not running into storage limitations and for faster read/write operations.  
 This is done by mirroring the directory structure in both the `HOME` and `SCRATCH` spaces, with only symlinks pointing to the large files being stored in the `HOME` space. 
 
 This pipeline will take single-end or paired-end FASTQ files and in order, do:
@@ -136,9 +136,10 @@ This will take you through a series of prompts asking:
 6. Enter sjdbOverhang value to use for STAR alignment to $GENOME genome (49 / 75 / 99 / 149)
     * You will have to have generated the genome index for different `sjdbOverhang` for this option to work. But you can alter the `./12_trimAlign.sh` file to point to the correct `$GENOME_DIR` variable, which is what the pipeline will ultimately use to align your raw data.
 7. Enter spike-in genome (dm6/k12/none)
-   * If you have a spiked-in exogenous chromosome from a different genome, you can also set-up the genome indexes for the relevant genome and alter the location of the `$SPIKEIN_GENOME_DIR` in `./12_trimAlign.sh` file. Currently, the spike-in option is only set-up for paired-end reads. 
+   * If you have a spiked-in exogenous chromosome from a different genome, you can also set-up the genome indexes for the relevant genome with the appropriate `sjdbOverhang` values and alter the location of the `$SPIKEIN_GENOME_DIR` in `./12_trimAlign.sh` file. Currently, the spike-in option is only set-up for paired-end reads. 
 
-Entering these options correctly will setup additional directories for the pipeline and submit jobs to `SLURM`.  
+Entering these options correctly will setup additional directories for the pipeline and submit jobs to `SLURM`.
+#### Location of the output files
 The aligned filtered `BAM` files will be stored in `./exampleCellLine/rna_seq/hnrnpl/data/alignedBAM` with the suffix `_2pass_Aligned.sortedByCoord.out.bam`.  
 The other output files will be stored in the `./exampleCellLine/rna_seq/hnrnpl/results/` directory, under `bw_files`, `fcounts_deseq`, `rMATS` and `qc_stats`.
 
