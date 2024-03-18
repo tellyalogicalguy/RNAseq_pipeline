@@ -134,8 +134,9 @@ This will take you through a series of prompts asking:
 5. Enter genome to align to (custom_ch12/mm10/hg38)
     * Depending on where you completed the `STAR` genome indexing and where the `GTF`, `GFF3` and `chrom.sizes` files are, you will have to edit the `./12_trimAlign.sh` file with the correct location of these directories and files before running the pipeline. The locations are under `case $GENOME`.
 6. Enter sjdbOverhang value to use for STAR alignment to $GENOME genome (49 / 75 / 99 / 149)
-    * You will have to have generated the genome index for different `sjdbOverhang` for this option to work. But you can alter the `./12_trimAlign.sh` file to point to the correct `$GENOME_DIR` variable, which is what the pipeline will ultimately use to align you raw data.
+    * You will have to have generated the genome index for different `sjdbOverhang` for this option to work. But you can alter the `./12_trimAlign.sh` file to point to the correct `$GENOME_DIR` variable, which is what the pipeline will ultimately use to align your raw data.
 7. Enter spike-in genome (dm6/k12/none)
+   * If you have a spiked-in exogenous chromosome from a different genome, you can also set-up the genome indexes for the relevant genome and alter the location of the `$SPIKEIN_GENOME_DIR` in `./12_trimAlign.sh` file. Currently, the spike-in option is only set-up for paired-end reads. 
 
 Entering these options correctly will setup additional directories for the pipeline and submit jobs to `SLURM`.  
 The aligned filtered `BAM` files will be stored in `./exampleCellLine/rna_seq/hnrnpl/data/alignedBAM` with the suffix `_2pass_Aligned.sortedByCoord.out.bam`.  
