@@ -26,10 +26,10 @@ There are 2 main aspects to setting up.
 2. Setting up the genome index for `STAR`, downloading the `GTF`, `GFF` annotation files and a `chrom.sizes` file (containing the chromosome names and their length).
     * The second setup step is not covered here. But refer to [this tutorial](https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/lessons/03_alignment.html) and [here](https://www.biostars.org/p/173963/) to complete the necessary steps before running the pipeline. 
 ### Directory setup
-The project directories and scripts can be set-up automatically by running the `setup_initial_folders_hnRNPL_RNAseq.sh` script.  
+The project directories and scripts can be set up automatically by running the `setup_initial_folders_hnRNPL_RNAseq.sh` script.  
 This script will take the name of a cell line/type as an argument and set up several directories necessary for the rest of the pipeline.
-Since this pipeline was set-up for analysing publicly available RNA-seq data of different cell types where a particular protein of interest (hnRNPL) had been depleted, the default directory structure currently is `./exampleCellLine/rna_seq/hnrnpl/` in which the `data`, `scripts` and `results` directories will be made.  
-Here is an example output when running `setup_initial_folders_hnRNPL_RNAseq.sh exampleCellLine`, which contains useful instructions to finish set-up:
+Since this pipeline was set up for analysing publicly available RNA-seq data of different cell types where a particular protein of interest (hnRNPL) had been depleted, the default directory structure currently is `./exampleCellLine/rna_seq/hnrnpl/` in which the `data`, `scripts` and `results` directories will be made.  
+Here is an example output when running `setup_initial_folders_hnRNPL_RNAseq.sh exampleCellLine`, which contains useful instructions to finish set up:
 ```
 Setting up folders in /home/subrampg/binf_analyses/hnrnpl_project/ (local)
 /home/subrampg/binf_analyses/hnrnpl_project/exampleCellLine
@@ -136,7 +136,7 @@ This will take you through a series of prompts asking:
 6. Enter sjdbOverhang value to use for STAR alignment to $GENOME genome (49 / 75 / 99 / 149)
     * You will have to have generated the genome index for different `sjdbOverhang` for this option to work. But you can alter the `./12_trimAlign.sh` file to point to the correct `$GENOME_DIR` variable, which is what the pipeline will ultimately use to align your raw data.
 7. Enter spike-in genome (dm6/k12/none)
-   * If you have a spiked-in exogenous chromosome from a different genome, you can also set-up the genome indexes for the relevant genome with the appropriate `sjdbOverhang` values and alter the location of the `$SPIKEIN_GENOME_DIR` in `./12_trimAlign.sh` file. Currently, the spike-in option is only set-up for paired-end reads. 
+   * If you have a spiked-in exogenous chromosome from a different genome, you can also set up the genome indexes for the relevant genome with the appropriate `sjdbOverhang` values and alter the location of the `$SPIKEIN_GENOME_DIR` in `./12_trimAlign.sh` file. Currently, the spike-in option is only set up for paired-end reads. 
 
 Entering these options correctly will setup additional directories for the pipeline and submit jobs to `SLURM`.
 ### Location of the output files
