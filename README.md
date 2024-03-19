@@ -92,7 +92,7 @@ The default directory structures can be changed by altering the `setup_initial_f
 
 ### Downloading files from SRA (optional)
 You can chose to download files from the SRA.  
-Update the `sra_list.txt` in the `./exampleCellLine/rna_seq/hnrnpl/data/` directory and then running `./sra_download.sh`. This script will downloaded files from SRA to the `./exampleCellLine/rna_seq/hnrnpl/data/raw_fastq/` directory in the SCRATCH space and symlink the raw files to the mirrored directory in HOME space.  
+Update the `sra_list.txt` in the `./exampleCellLine/rna_seq/hnrnpl/data/` directory and then run `./sra_download.sh`. This script will download files from SRA to the `./exampleCellLine/rna_seq/hnrnpl/data/raw_fastq/` directory in the SCRATCH space and symlink the raw files to the mirrored directory in HOME space.  
 Alternatively, the raw files can be uploaded to the SCRATCH space directly. In this case, please symlink the files by `ln -s`.  
 
 Do `md5sum` to check file integrity.
@@ -133,7 +133,7 @@ This will take you through a series of prompts asking:
 4. Is the sequencing in this dataset stranded? ( Yes / No )
 5. Enter genome to align to (custom_ch12/mm10/hg38)
     * Depending on where you completed the `STAR` genome indexing and where the `GTF`, `GFF3` and `chrom.sizes` files are, you will have to edit the `./12_trimAlign.sh` file with the correct location of these directories and files before running the pipeline. The locations are under `case $GENOME`.
-6. Enter sjdbOverhang value to use for STAR alignment to $GENOME genome (49 / 75 / 99 / 149)
+6. Enter sjdbOverhang value to use for STAR alignment to `$GENOME` genome (49 / 75 / 99 / 149)
     * You will have to have generated the genome index for different `sjdbOverhang` for this option to work. But you can alter the `./12_trimAlign.sh` file to point to the correct `$GENOME_DIR` variable, which is what the pipeline will ultimately use to align your raw data.
 7. Enter spike-in genome (dm6/k12/none)
    * If you have a spiked-in exogenous chromosome from a different genome, you can also set up the genome indexes for the relevant genome with the appropriate `sjdbOverhang` values and alter the location of the `$SPIKEIN_GENOME_DIR` in `./12_trimAlign.sh` file. Currently, the spike-in option is only set up for paired-end reads. 
