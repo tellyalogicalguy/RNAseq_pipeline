@@ -29,7 +29,7 @@ There are 2 main aspects to setting up.
 The project directories and scripts can be set up automatically by running the `setup_initial_folders_hnRNPL_RNAseq.sh` script.  
 This script will take the name of a cell line/type as an argument and set up several directories necessary for the rest of the pipeline.
 Since this pipeline was set up for analysing publicly available RNA-seq data of different cell types where a particular protein of interest (hnRNPL) had been depleted, the default directory structure currently is `./exampleCellLine/rna_seq/hnrnpl/` in which the `data`, `scripts` and `results` directories will be made.  
-Here is an example output when running `setup_initial_folders_hnRNPL_RNAseq.sh exampleCellLine`, which contains useful instructions to finish set up:
+Here is an example output when running `./setup_initial_folders_hnRNPL_RNAseq.sh exampleCellLine`, which contains useful instructions to finish set up:
 ```
 Setting up folders in /home/subrampg/binf_analyses/hnrnpl_project/ (local)
 /home/subrampg/binf_analyses/hnrnpl_project/exampleCellLine
